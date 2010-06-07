@@ -1,24 +1,41 @@
 use strict;
 use warnings;
 use Test::More;
+
+use HTTP::Response;
 use Net::Backtype;
 use Net::Backtweet;
 
-BEGIN {
-    plan skip_all => 'set $ENV{BACKTYPE_KEY} for this test'
-        unless $ENV{BACKTYPE_KEY};
+my $q   = 'lumberjaph';
+my $key = 's3kr3t';
+
+ok my $backtype = Net::Backtype->new, 'object backtype created';
+_add_handler($backtype);
+ok my $res = $backtype->comments_search(key => $key, q => $q,),
+  'got result for backtype query';
+
+ok my $backtweet = Net::Backtweet->new, 'object backtweet created';
+_add_handler($backtweet);
+
+ok $res = $backtweet->stats_by_url(key => $key, q => $q,),
+  'got result for backtweet query';
+
+ok my $compatilibity = $backtweet->backtweet_search(key => $key, q => $q),
+  'got result for old compatibility method';
+
+sub _add_handler {
+    my $object = shift;
+    $object->api_useragent->add_handler(
+        'request_send' => sub {
+            my $request  = shift;
+            my $response = HTTP::Response->new(200);
+            $response->header('Content-Type' => 'application/json');
+            $response->content(
+                '{"startindex" : 1, "itemsperpage" : 25, "since_ts" : 1275874078, "totalresults" : "500"}'
+            );
+            $response;
+        }
+    );
 }
 
-my $obj = Net::Backtweet->new;
-ok $obj, '... object created';
-my $method = $obj->meta->find_method_by_name('user_comments');
-ok $method->meta->has_attribute('method'), '... got method as attribute';
-is $method->method, 'GET', '... method is GET';
-
-my $res = $obj->backtweet_search(
-    key => $ENV{BACKTYPE_KEY},
-    q   => 'http://lumberjaph.net'
-);
-
-cmp_ok scalar @{ $res->{tweets} }, '>=', 1, '... got more than one result';
 done_testing;

@@ -1,27 +1,83 @@
-This is Perl module Net::Backtype.
+NAME
+    Net::Backtype - client for the backtype API
 
-INSTALLATION
+VERSION
+    version 0.02
 
-Net::Backtype installation is straightforward. If your CPAN shell is set up,
-you should just be able to do
+SYNOPSIS
+      use Net::Backtype;
+      my $client = Net::Backtype->new();
+      my $res = $client->comments_page(url => 'http://...', key => $mykey);
 
-    % cpan Net::Backtype
+DESCRIPTION
+    Net::Backtype is a client for the backtype API
 
-Download it, unpack it, then build it as per the usual:
+  METHODS
+    comments_search
+        Search all the comments on BackType for a given string.
 
-    % perl Makefile.PL
-    % make && make test
+            my $res = $client->comments_page(key => 's3kr3t', q => 'lumberjaph' );
 
-Then install it:
+        q query (required)
+        key API key (required)
+        start date start (optional)
+        end date end (optional)
 
-    % make install
+        See <http://www.backtype.com/developers/comments-search>.
 
-DOCUMENTATION
+    comments_connect
+        Retrieve all conversations related to a given URL.
 
-Net::Backtype documentation is available as in POD. So you can do:
+            my $res = $client->comments_connect(key => 's3kr3t', url => 'lumberjaph');
 
-    % perldoc Net::Backtype
+        url url (required)
+        key API key (required)
+        sources (optional)
+        sort (optional)
 
-to read the documentation online with your favorite pager.
+        See <http://www.backtype.com/developers/comments-connect>.
 
-franck cuny
+    comments_connect_stats
+        Retrieve statistics on the conversations related to a given URL.
+
+            my $res = $client->comments_connect_stats(url => 'lumberjaph', key => 's3kr3t');
+
+        url url (required)
+        key API key (required)
+
+        See <http://www.backtype.com/developers/comments-connect-stats>.
+
+    comments_author
+        Retrieve comments written by a particular author.
+
+            my $res = $client->comments_author(url => 'lumberjaph', key => 's3kr3t');
+
+        url url (required)
+        key API key (required)
+
+        See <http://www.backtype.com/developers/url-comments>.
+
+    comments_page
+        Retrieve excerpts of comments published on a particular page.
+
+            my $res = $client->comments_page_stats(url => 'lumberjaph', key => 's3kr3t');
+
+        url url (required)
+        key API key (required)
+
+        See <http://www.backtype.com/developers/page-comments>.
+
+    comments_page_stats
+        Retrieve statistics for the comments published on a particular page.
+
+        See <http://www.backtype.com/developers/page-comments-stats>
+
+AUTHOR
+      franck cuny <franck@lumberjaph.net>
+
+COPYRIGHT AND LICENSE
+    This software is copyright (c) 2010 by linkfluence.
+
+    This is free software; you can redistribute it and/or modify it under
+    the same terms as the Perl 5 programming language system itself.
+

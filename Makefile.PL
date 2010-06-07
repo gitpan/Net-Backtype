@@ -1,14 +1,55 @@
-use inc::Module::Install;
-name 'Net-Backtype';
-all_from 'lib/Net/Backtype.pm';
 
-requires 'Moose';
-requires 'MooseX::Net::API';
+use strict;
+use warnings;
 
-tests 't/*.t';
-author_tests 'xt';
 
-build_requires 'Test::More';
-use_test_base;
-auto_include;
-WriteAll;
+
+use ExtUtils::MakeMaker 6.31;
+
+
+
+my %WriteMakefileArgs = (
+  'ABSTRACT' => 'client for the backtype API',
+  'AUTHOR' => 'franck cuny <franck@lumberjaph.net>',
+  'BUILD_REQUIRES' => {
+    'HTTP::Response' => '0',
+    'Test::More' => '0'
+  },
+  'CONFIGURE_REQUIRES' => {
+    'ExtUtils::MakeMaker' => '6.31'
+  },
+  'DISTNAME' => 'Net-Backtype',
+  'EXE_FILES' => [],
+  'LICENSE' => 'perl',
+  'NAME' => 'Net::Backtype',
+  'PREREQ_PM' => {
+    'Moose' => '0',
+    'MooseX::Net::API' => '0'
+  },
+  'VERSION' => '0.02',
+  'test' => {
+    'TESTS' => 't/*.t'
+  }
+);
+
+
+unless ( eval { ExtUtils::MakeMaker->VERSION(6.56) } ) {
+  my $br = delete $WriteMakefileArgs{BUILD_REQUIRES};
+  my $pp = $WriteMakefileArgs{PREREQ_PM};
+  for my $mod ( keys %$br ) {
+    if ( exists $pp->{$mod} ) {
+      $pp->{$mod} = $br->{$mod} if $br->{$mod} > $pp->{$mod};
+    }
+    else {
+      $pp->{$mod} = $br->{$mod};
+    }
+  }
+}
+
+delete $WriteMakefileArgs{CONFIGURE_REQUIRES}
+  unless eval { ExtUtils::MakeMaker->VERSION(6.52) };
+
+WriteMakefile(%WriteMakefileArgs);
+
+
+
