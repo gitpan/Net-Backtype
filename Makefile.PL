@@ -24,9 +24,9 @@ my %WriteMakefileArgs = (
   'NAME' => 'Net::Backtype',
   'PREREQ_PM' => {
     'Moose' => '0',
-    'MooseX::Net::API' => '0'
+    'Net::HTTP::API' => '0'
   },
-  'VERSION' => '0.02',
+  'VERSION' => '0.03',
   'test' => {
     'TESTS' => 't/*.t'
   }

@@ -1,12 +1,12 @@
 package Net::Backtweet;
 BEGIN {
-  $Net::Backtweet::VERSION = '0.02';
+  $Net::Backtweet::VERSION = '0.03';
 }
 
 # ABSTRACT: client for the backtweet API
 
 use Moose;
-use MooseX::Net::API;
+use Net::HTTP::API;
 extends 'Net::Backtype';
 
 net_api_declare backtweet => (
@@ -62,7 +62,7 @@ Net::Backtweet - client for the backtweet API
 
 =head1 VERSION
 
-version 0.02
+version 0.03
 
 =head1 SYNOPSIS
 

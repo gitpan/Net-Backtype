@@ -2,10 +2,9 @@ package Net::Backtype;
 
 # ABSTRACT: client for the backtype API
 
-use Moose;
-use MooseX::Net::API;
+use Net::HTTP::API;
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 net_api_declare backtype => (
     base_url    => 'http://api.backtype.com',
@@ -82,7 +81,7 @@ Net::Backtype - client for the backtype API
 
 =head1 VERSION
 
-version 0.02
+version 0.03
 
 =head1 SYNOPSIS
 

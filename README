@@ -2,7 +2,7 @@ NAME
     Net::Backtype - client for the backtype API
 
 VERSION
-    version 0.02
+    version 0.03
 
 SYNOPSIS
       use Net::Backtype;
